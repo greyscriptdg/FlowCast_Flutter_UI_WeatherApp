@@ -1,2 +1,13 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Prioritize Dart for language stats
+*.dart linguist-detectable=true
+lib/** linguist-language=Dart
+
+# Exclude platform-specific boilerplate from stats
+android/** linguist-vendored
+ios/** linguist-vendored
+macos/** linguist-vendored
+web/** linguist-vendored
+windows/** linguist-vendored
+linux/** linguist-vendored
+build/** linguist-vendored
+.flutter-plugins-dependencies linguist-generated
