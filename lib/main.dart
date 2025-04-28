@@ -1,33 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'ui/screens/home_screen.dart';
-import 'ui/themes/app_theme.dart';
+import 'package:flowcast_flutter_ui/ui/screens/home_screen.dart';
+import 'package:flowcast_flutter_ui/ui/themes/app_theme.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
-      child: const FlowCastApp(),
-    ),
-  );
+  runApp(const FlowCastApp());
 }
 
-class FlowCastApp extends StatelessWidget {
+class FlowCastApp extends StatefulWidget {
   const FlowCastApp({super.key});
 
   @override
+  State<FlowCastApp> createState() => _FlowCastAppState();
+}
+
+class _FlowCastAppState extends State<FlowCastApp> {
+  bool isDarkMode = false;
+
+  void _toggleTheme() {
+    setState(() {
+      isDarkMode = !isDarkMode;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(
-      builder: (context, themeProvider, child) {
-        return MaterialApp(
-          title: 'FlowCast',
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          themeMode: themeProvider.themeMode,
-          home: const HomeScreen(),
-        );
-      },
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'FlowCast',
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      home: HomeScreen(
+        isDayTime: !isDarkMode,
+        onThemeToggle: _toggleTheme,
+      ),
     );
   }
-} 
+}
