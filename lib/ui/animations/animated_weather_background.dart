@@ -1,6 +1,5 @@
-// lib/ui/animations/animated_weather_background.dart
-
 import 'package:flutter/material.dart';
+import 'package:flowcast_flutter_ui/ui/animations/cloud_layer.dart'; // Import the CloudLayer
 
 class AnimatedWeatherBackground extends StatelessWidget {
   final bool isDayTime;
@@ -23,9 +22,8 @@ class AnimatedWeatherBackground extends StatelessWidget {
             ),
           ),
         ),
-        // TODO: Add animated sun/moon here
-        // TODO: Add moving clouds here
-        // TODO: Add rain, snow, wind particles here
+        // Moving cloud layer
+        const CloudLayer(),
       ],
     );
   }
