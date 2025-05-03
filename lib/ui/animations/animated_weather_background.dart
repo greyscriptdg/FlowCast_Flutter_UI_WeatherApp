@@ -1,35 +1,50 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flowcast_flutter_ui/ui/animations/cloud_layer.dart'; // Import the CloudLayer
 
-class AnimatedWeatherBackground extends StatelessWidget {
+class AnimatedWeatherBackground extends StatefulWidget {
   final bool isDayTime;
 
   const AnimatedWeatherBackground({super.key, required this.isDayTime});
 
   @override
+  State<AnimatedWeatherBackground> createState() => _AnimatedWeatherBackgroundState();
+}
+
+class _AnimatedWeatherBackgroundState extends State<AnimatedWeatherBackground> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 30),
+    )..repeat(); // Infinite loop
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        // Sky background
-        Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: isDayTime
-                  ? [Colors.lightBlue.shade300, Colors.blue.shade700]
-                  : [Colors.indigo.shade900, Colors.black],
-            ),
+    final size = MediaQuery.of(context).size;
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return CustomPaint(
+          painter: CloudPainter(
+            animationValue: _controller.value,
+            isDayTime: widget.isDayTime,
           ),
-        ),
-        // Moving cloud layer
-        const CloudLayer(),
-      ],
+          child: SizedBox(width: size.width, height: size.height),
+        );
+      },
     );
   }
 }
-<<<<<<< Updated upstream
-=======
 
 class CloudPainter extends CustomPainter {
   final double animationValue;
@@ -83,4 +98,3 @@ class CloudPainter extends CustomPainter {
     return oldDelegate.animationValue != animationValue || oldDelegate.isDayTime != isDayTime;
   }
 }
->>>>>>> Stashed changes
